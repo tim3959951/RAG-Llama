@@ -1,7 +1,7 @@
 # RAG-LLaMA: Retrieval-Augmented Generation with Llama
 
 
-This repository showcases **Retrieval-Augmented Generation (RAG)** using a **Large Language Model (LLM)** and **Chroma** as the vector database. The system answers questions about **President Biden’s 2023 State of the Union Address** by retrieving relevant text chunks (can be changed to other files for different usages), then generating a final answer. The project also demonstrates **deployment** on [Hugging Face Spaces](https://huggingface.co/spaces/ChienChung/RAG-Llama3) for real-time inference.
+This repository showcases **Retrieval-Augmented Generation (RAG)** using a **Large Language Model (LLM)** and **Chroma** as the vector database. The system answers questions about **President Biden’s 2023 State of the Union Address (SOTU)** by retrieving relevant text chunks (can be changed to other files for different usages), then generating a final answer. The project also demonstrates **deployment** on [Hugging Face Spaces](https://huggingface.co/spaces/ChienChung/RAG-Llama3) for real-time inference.
 
 ---
 
@@ -46,16 +46,16 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 
 ## Project Structure
 
-| File/Folder                                | Description |
-|--------------------------------------------|-------------|
-| 📂 `chorma_db`                         | Chroma vector database files containing the embedded text chunks from the 2023 State of the Union Address. |
-| 📄`app.py`                               | Main script that loads the LLaMA model, sets up the retrieval pipeline, initializes the Chroma DB, and starts the Gradio interface. |
-| 📄`requirements.txt`                     | Lists all required Python dependencies. |
-| 📄`Dockerfile`                           | Defines the Docker container setup: installs dependencies, copies project files, and executes `app.py`. |
-| 📄`biden-sotu-2023-planned-official.txt` | Contains the full text of the 2023 State of the Union Address, serving as the knowledge base for the system. |
-| 📄 `rag-llama3.2-langchain-chromadb.ipynb` | Full training pipeline notebook |
-| 📄 `README.md`                   | This file |
-| 📄 `.gitignore`                  | Ignore unnecessary files |
+| File/Folder                                | Description                                      |
+|--------------------------------------------|--------------------------------------------------|
+| 📂 `chorma_db`                         | Chroma DB with SOTU text embeddings.             |
+| 📄 `app.py`                               | Main script for model loading, retrieval, and UI.  |
+| 📄 `requirements.txt`                     | Required Python dependencies.                   |
+| 📄 `Dockerfile`                           | Docker setup and `app.py` execution.             |
+| 📄 `biden-sotu-2023-planned-official.txt` | Full SOTU text as the knowledge base.            |
+| 📄 `rag-llama3.2-langchain-chromadb.ipynb` | Training pipeline notebook.                      |
+| 📄 `README.md`                   | This file.                           |
+| 📄 `.gitignore`                  | List of files/folders to ignore.                 |
 
 
 ---
@@ -77,6 +77,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
    python app.py
    ```
    - By default, it launches a Gradio interface at http://127.0.0.1:7860.
+     
 ### Using Docker
 1. **Build** the image:
    ```bash
@@ -87,12 +88,14 @@ Develop a retrieval-augmented question answering system tailored to President Bi
    docker run -p 7860:7860 rag-llama.
    ```
    - Visit http://localhost:7860 to interact with the demo.
+     
 ### Example Questions
 - “What were the main topics regarding infrastructure in this speech?”
 - “How does the speech address the competition with China?”
 - “What does Biden say about Social Security or Medicare?”
   
 ---
+
 ## Future Improvements
 
 - **Scaling:** Experiment with larger LLaMA models or explore QLoRA fine-tuning to enhance performance.
