@@ -1,8 +1,10 @@
-transformers>=4.30.0
-accelerate>=0.20.3
-bitsandbytes; platform_system=="Linux"  # 若您要在 CUDA 上用 4-bit
-langchain>=0.0.90
+transformers>=4.31.0
+accelerate>=0.22.0
+bitsandbytes>=0.41.1
+langchain>=0.0.300
+langchain_community
 sentence-transformers>=2.2.2
-chromadb>=0.3.26
-gradio>=3.30.0
-torch>=2.0.0
+chromadb>=0.4.12
+gradio>=5.22.0
+torch>=2.6.0
+huggingface_hub>=0.28.1,<1.0
