@@ -19,7 +19,7 @@ else:
 print(f"Using device => {device}")
 
 hf_token = os.environ.get("HF_TOKEN")
-model_id = "ChienChung/my-llama-1b"
+model_id = "meta-llama/Llama-3.2-1B-Instruct"
 
 config_path = hf_hub_download(repo_id=model_id, filename="config.json", use_auth_token=hf_token)
 with open(config_path, "r", encoding="utf-8") as f:
