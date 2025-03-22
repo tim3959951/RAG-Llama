@@ -61,7 +61,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 ---
 
 ## How to Run
-
+#### Online: [Hugging Face Spaces](https://huggingface.co/spaces/ChienChung/RAG-Llama3)
 ### Local Setup
 1. **Clone** the repo and enter the directory:
    ```bash
