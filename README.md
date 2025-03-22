@@ -65,7 +65,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 ### Local Setup
 1. **Clone** the repo and enter the directory:
    ```bash
-   git clone https://github.com/YourName/rag-llama.git
+   git clone https://github.com/tim3959951/RAG-Llama.git
    cd rag-llama
    ```
 2. **Install** dependencies:
