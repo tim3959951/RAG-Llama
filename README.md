@@ -79,11 +79,16 @@ Develop a retrieval-augmented question answering system tailored to President Bi
    - By default, it launches a Gradio interface at http://127.0.0.1:7860.
      
 ### Using Docker
-1. **Build** the image:
+1. **Clone** the repo and enter the directory:
+   ```bash
+   git clone https://github.com/tim3959951/RAG-Llama.git
+   cd rag-llama
+   ```
+2. **Build** the image:
    ```bash
    docker build -t rag-llama .
    ```
-2. **Run** the container:
+3. **Run** the container:
    ```bash
    docker run -p 7860:7860 rag-llama.
    ```
