@@ -1,7 +1,7 @@
 # RAG-LLaMA: Retrieval-Augmented Generation with Llama
 
 
-This repository showcases **Retrieval-Augmented Generation (RAG)** using a **Large Language Model (LLM)** and **Chroma** as the vector database. The system answers questions about **President Biden’s 2023 State of the Union Address (SOTU)** by retrieving relevant text chunks (can be changed to other files for different usages), then generating a final answer. The project also demonstrates **deployment** on [Hugging Face Spaces](https://huggingface.co/spaces/ChienChung/RAG-Llama3) for real-time inference.
+This repository showcases **Retrieval-Augmented Generation (RAG)** using a **Large Language Model (LLM)** and **Chroma** as the vector database. The system answers questions about **President Biden’s 2023 State of the Union Address (SOTU)** by retrieving relevant text chunks (can be changed to other files for different usages), then generating a final answer. The project also demonstrates **deployment** on [here](https://huggingface.co/spaces/ChienChung/RAG-Llama3) for real-time inference.
 
 ---
 
