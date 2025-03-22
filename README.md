@@ -72,6 +72,10 @@ Develop a retrieval-augmented question answering system tailored to President Bi
    ```bash
    pip install -r requirements.txt
    ```
+3. **Export** your Hugging Face token (see **Note** below):
+   ```bash
+   export HF_TOKEN=your_token_here  # macOS/Linux
+   ```
 4. **Run** the app:
    ```bash
    python app.py
@@ -90,10 +94,26 @@ Develop a retrieval-augmented question answering system tailored to President Bi
    ```
 3. **Run** the container:
    ```bash
-   docker run -p 7860:7860 rag-llama
+   docker run -p 7860:7860 -e HF_TOKEN=your_token_here rag-llama
    ```
    - Visit http://localhost:7860 to interact with the demo.
-     
+
+> **Note**: This project used a gated model, you need appropriate Hugging Face credentials. Make sure to [request access](https://huggingface.co/meta-llama/) and include your token.
+> ###  Hugging Face Authentication (Required)
+> To run the app successfully, you must:
+> 1. **Request access to the model** here: https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct
+> 2. **Log in and generate your access token**: https://huggingface.co/settings/tokens Create a token with `read` permissions.
+> 3. **Export your token to the environment** before running the app:   
+>
+>   On Max/Linux:
+>   ```bash
+>   export HF_TOKEN=your_token_here
+>   ```
+>   On Windows:
+>   ```bash
+>   set HF_TOKEN=your_token_here
+>   ```
+  
 ### Example Questions
 - “What were the main topics regarding infrastructure in this speech?”
 - “How does the speech address the competition with China?”
