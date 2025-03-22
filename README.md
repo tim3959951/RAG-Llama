@@ -90,7 +90,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 1. **Clone** the repo and enter the directory:
    ```bash
    git clone https://github.com/tim3959951/RAG-Llama.git
-   cd rag-llama
+   cd RAG_Llama
    ```
 2. **Build** the image:
    ```bash
