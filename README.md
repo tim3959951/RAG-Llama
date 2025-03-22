@@ -24,6 +24,12 @@ This project also demonstrates **deployment** [here](https://huggingface.co/spac
 **Objective:**  
 Develop a retrieval-augmented question answering system tailored to President Biden’s 2023 State of the Union Address by integrating a fine-tuned LLaMA model with an efficient vector database.
 
+**Applicable Use Cases:**
+- Legal document Q&A
+- Financial report analysis
+- Political speech breakdown (this demo)
+- Technical manual assistance
+
 **Key Highlights:**
 - **Llama-3.2-1B-Instruct Model:** A smaller, fine-tuned variant of the LLaMA family optimized for text generation.
 - **Chroma Vector Database:** Stores text embeddings for rapid and relevant retrieval.
