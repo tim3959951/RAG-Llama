@@ -101,7 +101,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 > **Note**: This project used a gated model, you need appropriate Hugging Face credentials. Make sure to [request access](https://huggingface.co/meta-llama/) and include your token.
 >
 > <details>
-> <summary>To run the app successfully, you must:</summary>
+> <summary>To set up the credentials and taken:</summary>
 > 
 > 1. **Request access to the model** here: https://huggingface.co/meta-llama/Llama-3.2-1B-Instruct
 > 2. **Log in and generate your access token**: https://huggingface.co/settings/tokens Create a token with `read` permissions.
