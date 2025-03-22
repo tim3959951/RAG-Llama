@@ -1,7 +1,11 @@
-# RAG-LLaMA: Retrieval-Augmented Generation with Llama
+# RAG-LLaMA: Retrieval-Augmented Generation with LLaMA
 
+This repository showcases a **Retrieval-Augmented Generation (RAG)** pipeline using a **quantised Large Language Model (LLaMA)** and **Chroma** as the vector database. The system answers questions about **President Biden’s 2023 State of the Union Address (SOTU)** by retrieving relevant text chunks (custom documents can be substituted), then generating grounded answers.
 
-This repository showcases **Retrieval-Augmented Generation (RAG)** using a **Large Language Model (LLM)** and **Chroma** as the vector database. The system answers questions about **President Biden’s 2023 State of the Union Address (SOTU)** by retrieving relevant text chunks (can be changed to other files for different usages), then generating a final answer. The project also demonstrates **deployment** on [here](https://huggingface.co/spaces/ChienChung/RAG-Llama3) for real-time inference.
+While LLMs are powerful at understanding context and generating responses, they may hallucinate when asked about unseen information. RAG mitigates this by combining an external retriever (based on vector search via text embeddings) with a generator (LLM). The interaction between both components is orchestrated using **LangChain**.
+
+This project also demonstrates **deployment** [here](https://huggingface.co/spaces/ChienChung/RAG-Llama3) for real-time inference.
+
 
 ---
 
