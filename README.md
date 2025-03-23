@@ -104,7 +104,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
    ```
 3. **Run** the container:
    ```bash
-   docker run -p 7860:7860 -e HF_TOKEN=your_token_here rag-llama
+   docker run -P -e HF_TOKEN=your_token_here rag-llama
    ```
    - Visit http://localhost:7860 to interact with the demo.
 
