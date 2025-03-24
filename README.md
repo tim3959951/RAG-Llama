@@ -4,7 +4,7 @@ This repository showcases a **Retrieval-Augmented Generation (RAG)** pipeline us
 
 While LLMs are powerful at understanding context and generating responses, they may hallucinate when asked about unseen information. RAG mitigates this by combining an external retriever (based on vector search via text embeddings) with a generator (LLM). The interaction between both components is orchestrated using **LangChain**.
 
-This project also demonstrates **deployment** [here](https://huggingface.co/spaces/ChienChung/RAG-Llama3) for real-time inference.
+This project also demonstrates **deployment** [here](https://huggingface.co/spaces/ChienChung/llama-rag-gpt4-demo) for real-time inference.
 
 
 ---
