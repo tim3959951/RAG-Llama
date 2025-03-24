@@ -68,7 +68,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 | 📄 `requirements.txt`                      | Required Python dependencies.                   |
 | 📄 `Dockerfile`                            | Docker setup and `app.py` execution.             |
 | 📄 `biden-sotu-2023-planned-official.txt`    | Full SOTU text as the knowledge base.            |
-| 📄 `rag-llama3.2-langchain-chromadb.ipynb`   | Training pipeline notebook.                      |
+| 📄 `rag-llama-gpt.ipynb`   | Training pipeline notebook.                      |
 | 📄 `README.md`                             | This file.                                       |
 | 📄 `.gitignore`                            | List of files/folders to ignore.                 |
 
