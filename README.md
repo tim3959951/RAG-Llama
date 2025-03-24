@@ -1,11 +1,14 @@
-# RAG-LLaMA: Retrieval-Augmented Generation with LLaMA
+# RAG-LLaMA: Retrieval-Augmented Generation with LLaMA & GPT-4
 
-This repository showcases a **Retrieval-Augmented Generation (RAG)** pipeline using a **quantised Large Language Model (LLaMA)** and **Chroma** as the vector database. The system answers questions about **President Biden’s 2023 State of the Union Address (SOTU)** by retrieving relevant text chunks (custom documents can be substituted), then generating grounded answers.
+This repository showcases a multi-agent **Retrieval-Augmented Generation (RAG)** system combining a **quantised LLaMA** and **GPT-4** to answer questions grounded in President Biden’s 2023 State of the Union (SOTU) address and user-uploaded documents, while reducing hallucinations and enabling memory-based interactions.
 
-While LLMs are powerful at understanding context and generating responses, they may hallucinate when asked about unseen information. RAG mitigates this by combining an external retriever (based on vector search via text embeddings) with a generator (LLM). The interaction between both components is orchestrated using **LangChain**.
+While LLMs are powerful at understanding context and generating responses, they may **hallucinate** when asked about unseen information. RAG mitigates this by combining an external retriever (based on vector search via text embeddings) with a generator (LLM). The interaction between both components is orchestrated using **LangChain**.
 
-This project also demonstrates **deployment** [here](https://huggingface.co/spaces/ChienChung/llama-rag-gpt4-demo) for real-time inference.
+This project also demonstrates **deployment** [here](https://huggingface.co/spaces/ChienChung/llama-rag-gpt4-demo) for real-time inference. The demo features three tabs: 
 
+1. Tab 1 uses the quantised LLaMA model (local, private, no follow-up).  
+2. Tab 2 integrates GPT-4 with FAISS (API-based, strong instruction following with multi-turn memory).  
+3. Tab 3 supports .txt, .pdf, and .docx uploads with dynamic FAISS indexing and fallback control.
 
 ---
 
@@ -22,7 +25,7 @@ This project also demonstrates **deployment** [here](https://huggingface.co/spac
 ## Overview
 
 **Objective:**  
-Develop a retrieval-augmented question answering system tailored to President Biden’s 2023 State of the Union Address by integrating a fine-tuned LLaMA model with an efficient vector database.
+Develop a retrieval-augmented question answering system tailored to President Biden’s 2023 State of the Union Address by integrating a fine-tuned LLaMA model with an efficient vector database, and expanding capabilities with GPT-4 based modules for enhanced memory and document handling.
 
 **Applicable Use Cases:**
 - Legal document Q&A
@@ -35,6 +38,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 - **Chroma Vector Database:** Stores text embeddings for rapid and relevant retrieval.
 - **LangChain Integration:** Uses RetrievalQA (chain_type="stuff") to blend retrieved context with model inference.
 - **Gradio Demo:** Offers a user-friendly web interface for interactive queries on Hugging Face Spaces.
+- **Expanded Modules:** Tab 2 integrates GPT-4 with FAISS for strong instruction following with multi-turn memory, while Tab 3 supports document uploads with GPT-4 & FAISS fallback control.
 
 ---
 
@@ -48,24 +52,26 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 
 3. **Retrieval-Augmented Generation (RAG):**
    - LangChain’s RetrievalQA leverages the retrieved text fragments as context for the LLaMA model, which then generates a context-aware final answer.
+   - **Tab 2 & Tab 3:** GPT-4 based modules utilise FAISS for retrieval and offer enhanced instruction following with multi-turn conversation history. Tab 3 further supports user document uploads with fallback control.
 
 4. **Gradio Interface:**
-   - A Gradio interface (default port 7860) is launched, allowing users to input queries and receive immediate answers.
-     
+   - A Gradio interface (default port 7860) is launched, allowing users to input queries and receive immediate answers across all three tabs.
+
 ---
 
 ## Project Structure
 
 | File/Folder                                | Description                                      |
 |--------------------------------------------|--------------------------------------------------|
-| 📂 `chorma_db`                         | Chroma DB with SOTU text embeddings.             |
-| 📄 `app.py`                               | Main script for model loading, retrieval, and UI.  |
-| 📄 `requirements.txt`                     | Required Python dependencies.                   |
-| 📄 `Dockerfile`                           | Docker setup and `app.py` execution.             |
-| 📄 `biden-sotu-2023-planned-official.txt` | Full SOTU text as the knowledge base.            |
-| 📄 `rag-llama3.2-langchain-chromadb.ipynb` | Training pipeline notebook.                      |
-| 📄 `README.md`                   | This file.                           |
-| 📄 `.gitignore`                  | List of files/folders to ignore.                 |
+| 📂 `chroma_db`                             | Chroma DB with SOTU text embeddings.             |
+| 📄 `app.py`                                | Main script for model loading, retrieval, and UI.|
+| 📄 `requirements.txt`                      | Required Python dependencies.                   |
+| 📄 `Dockerfile`                            | Docker setup and `app.py` execution.             |
+| 📄 `biden-sotu-2023-planned-official.txt`    | Full SOTU text as the knowledge base.            |
+| 📄 `rag-llama3.2-langchain-chromadb.ipynb`   | Training pipeline notebook.                      |
+| 📄 `README.md`                             | This file.                                       |
+| 📄 `.gitignore`                            | List of files/folders to ignore.                 |
+
 
 
 ---
@@ -138,7 +144,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 
 - **Scaling:** Experiment with larger LLaMA models or explore QLoRA fine-tuning to enhance performance.
 - **Online RAG:** Integrate real-time web scraping or additional knowledge bases to dynamically update the context.
-- **UI Enhancements:** Improve the Gradio interface with richer features such as usage metrics and advanced query handling.
+- **UI Enhancements:** Chatbot-style history toggle, and visual source highlighting.
 
 ---
 
@@ -148,6 +154,5 @@ This project is distributed under the terms specified in the repository’s lice
 
 ---
 
-**Thank you for exploring RAG-LLaMA!**  
+**Thank you for exploring RAG-LLaMA & GPT-4!**  
 For any questions, issues, or collaboration opportunities, please open an issue or connect via [LinkedIn](https://www.linkedin.com/in/tim-cch).
-Feel free to open issues or pull requests, or connect on [LinkedIn](https://www.linkedin.com/in/tim-cch).  
