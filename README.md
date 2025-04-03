@@ -4,7 +4,7 @@ This repository showcases a multi-agent **Retrieval-Augmented Generation (RAG)**
 
 While LLMs are powerful at understanding context and generating responses, they may **hallucinate** when asked about unseen information. RAG mitigates this by combining an external retriever (based on vector search via text embeddings) with a generator (LLM). The interaction between both components is orchestrated using **LangChain**.
 
-This project also demonstrates **deployment** [here](https://huggingface.co/spaces/ChienChung/llama-rag-gpt4-demo) for real-time inference. The demo features three tabs: 
+This project also demonstrates **deployment** [here](https://huggingface.co/spaces/ChienChung/SmartRAG_Multi-Agent_Assistant_) for real-time inference. The demo features three tabs: 
 
 1. Tab 1 uses the quantised LLaMA model (local, private, no follow-up).  
 2. Tab 2 integrates GPT-4 with FAISS (API-based, strong instruction following with multi-turn memory).  
@@ -77,7 +77,7 @@ Develop a retrieval-augmented question answering system tailored to President Bi
 ---
 
 ## How to Run
-#### Online: [Hugging Face Spaces](https://huggingface.co/spaces/ChienChung/RAG-Llama3)
+#### Online: [Hugging Face Spaces](https://huggingface.co/spaces/ChienChung/SmartRAG_Multi-Agent_Assistant_)
 ### Local Setup
 1. **Clone** the repo and enter the directory:
    ```bash
