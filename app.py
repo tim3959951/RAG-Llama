@@ -186,7 +186,6 @@ model_config.trust_remote_code = True
 
 
 
-
 print("Loading tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained(
     model_id,
@@ -198,17 +197,6 @@ if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 print("Tokenizer loaded!")
 
-query_pipeline = transformers.pipeline(
-    "text-generation",
-    model=model,
-    tokenizer=tokenizer,
-    torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-    device_map="auto" if device != "cpu" else None,
-    do_sample=False,
-    temperature=0.0,
-    max_new_tokens=200,
-    return_full_text=False
-)
 
 # Chroma DB and Document Retrieval Setup 
 print("Loading Chroma DB for Biden Speech...")
