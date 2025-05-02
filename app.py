@@ -158,6 +158,10 @@ async def multi_doc_qa(request: Request):
     result = langgraph_tab6_main(query)
     return JSONResponse(content={"result": result})
     
+@api_app.get("/")
+async def root():
+    return {"message": "API is running!"}
+    
 # Model and Device Setup 
 if torch.backends.mps.is_available():
     device = "mps"
