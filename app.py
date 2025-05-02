@@ -44,12 +44,12 @@ os.environ["OPENAI_API_TYPE"] = "open_ai"  # 如果您使用的是 OpenAI API
 
 
 
-# ✅ 建立 temp 安全區
+#  建立 temp 安全區
 os.environ["DEEPEVAL_TELEMETRY_OPT_OUT"] = "YES"
 os.environ["DEEPEVAL_RESULTS_FOLDER"] = "/tmp/deepeval_results"
 os.makedirs("/tmp/deepeval_results", exist_ok=True)
 
-# ✅ 修正 Python tempdir 基底（避免它寫 home）
+#  修正 Python tempdir 基底（避免它寫 home）
 import tempfile
 tempfile.tempdir = "/tmp"
 # 在此處加入 DeepEval 的 monkey-patch，避免全域更改工作目錄
@@ -184,16 +184,8 @@ if "rope_scaling" in config_dict:
 model_config = LlamaConfig.from_dict(config_dict)
 model_config.trust_remote_code = True
 
-print("Loading Llama model...")
-model = AutoModelForCausalLM.from_pretrained(
-    model_id,
-    config=model_config,
-    trust_remote_code=True,
-    use_auth_token=hf_token,
-    cache_dir="/tmp/huggingface"
-)
-model.to(device)
-print("Model loaded!")
+
+
 
 print("Loading tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained(
@@ -245,7 +237,7 @@ Answer:
 """
 )
 
-llm_local = HuggingFacePipeline(pipeline=query_pipeline)
+
 llm_gpt4 = ChatOpenAI(model_name="gpt-4o-mini", temperature=0.2, openai_api_key=openai_api_key)
 crew_llm = ChatOpenAI(
     model_name="gpt-4o-mini",
@@ -277,18 +269,6 @@ def get_file_path(file):
         return None
 
 # Original functionalities (Tabs 1-4) functions
-@traceable(name="Biden LLaMA QA")
-def rag_llama_qa(query):
-    output = RetrievalQA.from_chain_type(
-        llm=llm_local,
-        chain_type="stuff",
-        retriever=retriever,
-        return_source_documents=False,
-        chain_type_kwargs={"prompt": custom_prompt}
-    ).run(query)
-    lower_text = output.lower()
-    idx = lower_text.find("answer:")
-    return output[idx + len("answer:"):].strip() if idx != -1 else output
 
 @traceable(name="GPT-4 Document QA")
 def rag_gpt4_qa(query):
@@ -1895,14 +1875,6 @@ demo = gr.TabbedInterface(
             title="Biden Q&A (GPT-4 RAG)",
             allow_flagging="never",
             description=demo_description2
-        ),
-        gr.Interface(
-            fn=rag_llama_qa,
-            inputs="text",
-            outputs="text",
-            title="Biden Q&A (LLaMA RAG)",
-            allow_flagging="never",
-            description=demo_description
         ),
         
     ],
