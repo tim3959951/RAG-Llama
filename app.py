@@ -162,14 +162,92 @@ function_specs = [
     {
         "name": "multi_doc_qa",
         "description": "Answer queries across multiple documents",
-        "parameters": {"type":"object","properties":{"query":{"type":"string"},"files":{"type":"array","items":{"type":"object","properties":{"name":{"type":"string"},"data":{"type":"string","format":"binary"}}}}},"required":["query"]
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "files": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "data": {"type": "string", "format": "binary"}
+                        }
+                    }
+                }
+            }
+        },
+        "required": ["query"]
     },
-    {"name":"summarize","description":"Summarise documents","parameters":{"type":"object","properties":{"query":{"type":"string"},"files":{"type":"array","items":{"type":"object"}}}},"required":["query"]},
-    {"name":"doc_qa","description":"Answer on single document","parameters":{"type":"object","properties":{"query":{"type":"string"},"file":{"type":"object"}}},"required":["query","file"]},
-    {"name":"math","description":"Calculate expression","parameters":{"type":"object","properties":{"expression":{"type":"string"}}},"required":["expression"]},
-    {"name":"time","description":"Get current time","parameters":{"type":"object","properties":{}}},
-    {"name":"weather","description":"Get weather for location","parameters":{"type":"object","properties":{"query":{"type":"string"}}},"required":["query"]},
-    {"name":"search","description":"Search the web","parameters":{"type":"object","properties":{"query":{"type":"string"}}},"required":["query"]}
+    {
+        "name": "summarize",
+        "description": "Summarise documents",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "files": {
+                    "type": "array",
+                    "items": {"type": "object"}
+                }
+            }
+        },
+        "required": ["query"]
+    },
+    {
+        "name": "doc_qa",
+        "description": "Answer on single document",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "file": {"type": "object"}
+            }
+        },
+        "required": ["query", "file"]
+    },
+    {
+        "name": "math",
+        "description": "Calculate expression",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "expression": {"type": "string"}
+            }
+        },
+        "required": ["expression"]
+    },
+    {
+        "name": "time",
+        "description": "Get current time",
+        "parameters": {
+            "type": "object",
+            "properties": {}
+        }
+    },
+    {
+        "name": "weather",
+        "description": "Get weather for location",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"}
+            }
+        },
+        "required": ["query"]
+    },
+    {
+        "name": "search",
+        "description": "Search the web",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"}
+            }
+        },
+        "required": ["query"]
+    }
 ]
 
 # Map function name to implementation
