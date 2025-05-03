@@ -156,15 +156,14 @@ async def chat(request: Request):
     if any(keyword in msg for keyword in fallback_keywords):
         print("[DEBUG] Triggered fallback: forcing weather function")
         result = fn_map["weather"]({"query": msg})
-        print(f"[DEBUG] Fallback triggered, weather result: {result}")
-        
-        # 再次向 GPT 匯總結果
+
+        # 再次向 GPT 匯總結果（注意這裡去掉 json.dumps）
         follow = openai.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 *history,
-                {"role": "function", "name": "weather", "content": json.dumps(result, ensure_ascii=False)},
-                {"role": "user", "content": "請根據工具返回的數據，用簡明的自然語言回答用戶。"}
+                {"role": "function", "name": "weather", "content": result},
+                {"role": "user", "content": "請完全基於工具提供的數據回答用戶的問題，不要依賴自己的知識庫，也不要回答任何『無法提供』或『查不到』的話。"}
             ]
         )
         reply = follow.choices[0].message.content
