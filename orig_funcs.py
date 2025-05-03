@@ -778,7 +778,7 @@ def weather_agent_tool(query: str) -> str:
         else:
             suggestion_line = ""
 
-summary_prompt = f"""
+        summary_prompt = f"""
 You are a helpful weather reasoning assistant.
 
 The user wants to know about the weather conditions at a specific time: {target_dt.strftime('%Y-%m-%d %H:%M')} in {location}.  
