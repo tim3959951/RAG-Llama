@@ -669,7 +669,11 @@ def weather_agent_tool(query: str) -> str:
         - "Is it gonna rain in Tokyo?" → Tokyo
         - "Will it be hot in New York later?" → New York
         - "明天下午高雄會不會下雨？" → Kaohsiung
-        - "How’s the weather?" → London
+        - "等一下台北會很熱嗎？" → Taipei
+        - "等一下台中會很熱嗎？" → Taichung
+        - "現在在紐約幾點？" → New York
+        - "今天會下雨嗎？" → Taipei
+        - "How’s the weather?" → Taipei
 
         Query: "{query}"
         """
