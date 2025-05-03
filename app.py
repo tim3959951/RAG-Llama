@@ -15,7 +15,8 @@ def load_history(user_id: str):
     return json.loads(data) if data else []
 def save_history(user_id: str, history, ttl_hours=24):
     REDIS.setex(f"conv:{user_id}", ttl_hours*3600, json.dumps(history, ensure_ascii=False))
-
+print(f"[DEBUG] Saving history: {history}")
+print(f"[DEBUG] Loaded history: {history}")
 # --- 导入你原封不动的所有函数 ---
 import orig_funcs
 
@@ -154,7 +155,8 @@ async def chat(request: Request):
     if any(keyword in msg for keyword in fallback_keywords):
         print("[DEBUG] Triggered fallback: forcing weather function")
         result = fn_map["weather"]({"query": msg})
-
+        print(f"[DEBUG] Fallback triggered, weather result: {result}")
+        
         # 再次向 GPT 匯總結果
         follow = openai.chat.completions.create(
             model="gpt-4o-mini",
