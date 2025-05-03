@@ -269,23 +269,40 @@ async def chat_endpoint(request: Request):
     body = await request.json()
     user_msg = body.get("query")
     files = body.get("files", [])
+    
+    # 第一次：讓 GPT 判斷要不要調用 function
     response = openai.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role":"user","content": user_msg}],
+        messages=[{"role": "user", "content": user_msg}],
         functions=function_specs,
         function_call="auto"
     )
     msg = response.choices[0].message
+
     if msg.function_call:
         name = msg.function_call.name
         args = json.loads(msg.function_call.arguments)
+        
+        # 補上 files 如果需要
         if name in ["multi_doc_qa", "summarize"]:
             args["files"] = files
         if name == "doc_qa" and files:
             args["file"] = files[0]
-        result = fn_map[name](args)
-        return JSONResponse(content={"result": result})
+
+        # 呼叫對應的 function
+        function_result = fn_map[name](args)
+        
+        # 第二次：讓 GPT 把 function 結果整理成人類可讀答案
+        final_response = openai.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "你是一個助理，負責把工具的原始結果整理成簡單明瞭的自然語言，回答給用戶。"},
+                {"role": "user", "content": f"以下是工具回傳的資料：{json.dumps(function_result, ensure_ascii=False)}。請整理成用戶能懂的答案。"}
+            ]
+        )
+        return JSONResponse(content={"result": final_response.choices[0].message.content})
     else:
+        # 如果沒有調用 function，就直接用 GPT 回答
         return JSONResponse(content={"result": msg.content})
 
 # === Run Uvicorn ===
