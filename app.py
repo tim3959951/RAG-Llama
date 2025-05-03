@@ -16,14 +16,14 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 
 # === Environment setup ===
-ios.environ["MPLCONFIGDIR"] = "/tmp/matplotlib"
-ios.environ["HOME"] = "/tmp"
-ios.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
-ios.environ["HF_HOME"] = "/tmp/huggingface"
-ios.environ["TRANSFORMERS_CACHE"] = "/tmp/huggingface/transformers"
-ios.environ["HF_DATASETS_CACHE"] = "/tmp/huggingface/datasets"
-ios.environ["HF_METRICS_CACHE"] = "/tmp/huggingface/metrics"
-ios.environ["AUTOGEN_WORKSPACE"] = "/tmp/autogen_workspace"
+os.environ["MPLCONFIGDIR"] = "/tmp/matplotlib"
+os.environ["HOME"] = "/tmp"
+os.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
+os.environ["HF_HOME"] = "/tmp/huggingface"
+os.environ["TRANSFORMERS_CACHE"] = "/tmp/huggingface/transformers"
+os.environ["HF_DATASETS_CACHE"] = "/tmp/huggingface/datasets"
+os.environ["HF_METRICS_CACHE"] = "/tmp/huggingface/metrics"
+os.environ["AUTOGEN_WORKSPACE"] = "/tmp/autogen_workspace"
 
 os.makedirs(os.environ["AUTOGEN_WORKSPACE"], exist_ok=True)
 
