@@ -12,8 +12,9 @@ from typing import Dict, Any
 REDIS = redis.Redis(host="127.0.0.1", port=6379, db=0, decode_responses=True)
 def load_history(user_id: str):
     data = REDIS.get(f"conv:{user_id}")
+    history = json.loads(data) if data else []
     print(f"[DEBUG] Loaded history for {user_id}: {history}")
-    return json.loads(data) if data else []
+    return history
 def save_history(user_id: str, history, ttl_hours=24):
     print(f"[DEBUG] Saving history for {user_id}: {history}")
     REDIS.setex(f"conv:{user_id}", ttl_hours*3600, json.dumps(history, ensure_ascii=False))
