@@ -149,8 +149,11 @@ async def chat(request: Request):
     # 读历史
     history = load_history(user_id)
     if not history:
-        history.append({"role":"system","content":"你是一名 AI 助理，支持數學、時間、天氣、搜索、文檔QA和文檔總結。"})
-    history.append({"role":"user","content":msg})
+        history.append({
+            "role": "system",
+            "content": "你是一名 AI 助理，預設使用繁體中文作答。但請根據用戶的語言自動切換語言：如果用戶用英文提問，請用英文回答；如果用戶用繁體中文，請用繁體回答；請避免使用簡體中文，除非用戶明確要求。"
+        })
+    
     
     fallback_keywords = ["天氣", "weather"]
     if any(keyword in msg for keyword in fallback_keywords):
@@ -163,7 +166,7 @@ async def chat(request: Request):
             messages=[
                 *history,
                 {"role": "function", "name": "weather", "content": result},
-                {"role": "user", "content": "請完全基於工具提供的數據回答用戶的問題，不要依賴自己的知識庫，也不要回答任何『無法提供』或『查不到』的話。"}
+                {"role": "user", "content": "請完全基於工具提供的數據回答用戶的問題，並用與用戶相同的語言回答。預設繁體中文，不要使用簡體中文。"}
             ]
         )
         reply = follow.choices[0].message.content
