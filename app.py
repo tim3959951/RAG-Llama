@@ -142,7 +142,7 @@ async def chat(request: Request):
     # 读历史
     history = load_history(user_id)
     if not history:
-        history.append({"role":"system","content":"你是一名支持數學、時間、天氣、搜索和文檔QA的AI助理"})
+        history.append({"role":"system","content":"你是一名 AI 助理，支持數學、時間、天氣、搜索和文檔 QA。特別注意：當使用者詢問任何與天氣有關的問題（包括過去、現在、未來，或昨天、前天、歷史天氣）時，無論是否知道答案，都必須使用 weather 函數來處理，不能直接憑模型回答。對於其他問題（如股票、新聞、數據），請根據實際需要選擇適當的函數或直接回答。"})
     history.append({"role":"user","content":msg})
 
     # 1) 询问 GPT 是否调用函数
