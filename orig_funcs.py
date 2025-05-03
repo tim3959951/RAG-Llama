@@ -491,13 +491,14 @@ def get_time_tool(query: str) -> str:
     # use GPT to find location keyword
     try:
         location_prompt = f"""
-        You are a location extractor. Given a user's query about time or date, return the location mentioned in it. If not found, return "London".
+        You are a location extractor. Given a user's query about time or date, return the location mentioned in it. If not found, return "Taipei".
 
         Examples:
         - "What's the time in Tokyo now?" → Tokyo
         - "今天台北幾點？" → Taipei
         - "現在在紐約幾點？" → New York
         - "今天幾號？" → London
+        - "屏東現在幾點？" → Pingtung
         - "What date is today？" → London
 
         Now process this query: "{query}"
@@ -529,13 +530,15 @@ def time_tool(query: str) -> str:
     # use GPT to find location keyword
     try:
         location_prompt = f"""
-        You are a location extractor. Given a user's query about time or date, return the location mentioned in it. If not found, return "London".
+        You are a location extractor. Given a user's query about time or date, return the location mentioned in it. If not found, return "Taipei".
 
         Examples:
         - "What's the time in Tokyo now?" → Tokyo
-        - "今天台北幾點？" → Taipei
+        - "今天台中幾點？" → Taichung
+        - "高雄幾點？" → Kaohsiung
+        - "屏東時間？" → Pingtung
         - "現在在紐約幾點？" → New York
-        - "今天幾號？" → London
+        - "今天幾號？" → Taipei
         - "What date is today？" → London
 
         Now process this query: "{query}"
@@ -569,8 +572,19 @@ def get_time_tool2(query: str) -> datetime:
         # Step 1: 抽出地點
         location_prompt = f"""
         You are a location extractor. Given a user's query about time or date, return the location mentioned in it.
-        If not found, return "London".
+        If not found, return "Taipei".
 
+        Examples:
+        - "Is it gonna rain in Tokyo?" → Tokyo
+        - "Will it be hot in New York later?" → New York
+        - "明天下午高雄會不會下雨？" → Kaohsiung
+        - "等一下台北會很熱嗎？" → Taipei
+        - "等一下台中會很熱嗎？" → Taichung
+        - "屏東昨天天氣如何？" → Pingtung
+        - "現在在紐約有下雪嗎？" → New York
+        - "今天會下雨嗎？" → Taipei
+        - "How’s the weather?" → Taipei
+        
         Query: "{query}"
         """
         location_response = llm_gpt4.invoke(location_prompt)
@@ -641,7 +655,6 @@ Use this exact time to reason all examples below.
         examples_str = "\n".join([f'User Query: "{q}" → {dt.strftime("%Y-%m-%d %H:%M:%S")}' for q, dt in examples])
 
         # Step 4: 构建完整 prompt
-        # Step 4: 构建完整 prompt
         time_query_prompt = f"""
 You are a timezone-aware time reasoner. Based on the user's query, calculate the **exact target time** they are referring to.
 Remember: all relative expressions like "later", "in 2 hours", "tomorrow" must be strictly calculated based on the current local time above.
@@ -683,7 +696,7 @@ def weather_agent_tool(query: str) -> str:
         # Step 1: Extract location
         location_prompt = f"""
         You are a location extractor. Given a user's query about weather, extract the location mentioned in it.
-        If not found, return "London".
+        If not found, return "Taipei".
 
         Examples:
         - "Is it gonna rain in Tokyo?" → Tokyo
@@ -691,7 +704,8 @@ def weather_agent_tool(query: str) -> str:
         - "明天下午高雄會不會下雨？" → Kaohsiung
         - "等一下台北會很熱嗎？" → Taipei
         - "等一下台中會很熱嗎？" → Taichung
-        - "現在在紐約幾點？" → New York
+        - "屏東昨天天氣如何？" → Pingtung
+        - "現在在紐約有下雪嗎？" → New York
         - "今天會下雨嗎？" → Taipei
         - "How’s the weather?" → Taipei
 
@@ -809,13 +823,14 @@ def weather_tool(query: str) -> str:
         # Step 1: Extract location
         location_prompt = f"""
         You are a location extractor. Given a user's query about weather, extract the location mentioned in it.
-        If not found, return "London".
+        If not found, return "Taipei".
 
         Examples:
         - "Is it gonna rain in Tokyo?" → Tokyo
         - "Will it be hot in New York later?" → New York
         - "明天下午高雄會不會下雨？" → Kaohsiung
-        - "How’s the weather?" → London
+        - "昨天屏東天氣如何？" → Pingtung
+        - "How’s the weather?" → Taipei
 
         Query: "{query}"
         """
