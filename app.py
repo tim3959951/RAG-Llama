@@ -276,18 +276,17 @@ async def chat_endpoint(request: Request):
         function_call="auto"
     )
     msg = response.choices[0].message
-    if msg.get("function_call"):
-        name = msg["function_call"]["name"]
-        args = json.loads(msg["function_call"]["arguments"])
-        # attach uploads if needed
-        if name in ["multi_doc_qa","summarize"]:
+    if msg.function_call:
+        name = msg.function_call.name
+        args = json.loads(msg.function_call.arguments)
+        if name in ["multi_doc_qa", "summarize"]:
             args["files"] = files
         if name == "doc_qa" and files:
             args["file"] = files[0]
         result = fn_map[name](args)
         return JSONResponse(content={"result": result})
     else:
-        return JSONResponse(content={"result": msg.get("content")})
+        return JSONResponse(content={"result": msg.content})
 
 # === Run Uvicorn ===
 if __name__ == "__main__":
