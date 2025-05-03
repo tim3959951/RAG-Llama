@@ -27,84 +27,102 @@ function_specs = [
         "name": "math",
         "description": "數學運算",
         "parameters": {
-            "type":"object",
-            "properties": {"expression":{"type":"string"}},
-            "required":["expression"]
+            "type": "object",
+            "properties": {
+                "expression": {"type": "string"}
+            },
+            "required": ["expression"]
         }
     },
     {
         "name": "time",
         "description": "獲取當前時間/日期",
-        "parameters": {"type":"object","properties":{}}
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"}
+            },
+            "required": ["query"]
+        }
     },
     {
         "name": "weather",
         "description": "天氣查詢",
         "parameters": {
-            "type":"object",
-            "properties":{"query":{"type":"string"}},
-            "required":["query"]
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"}
+            },
+            "required": ["query"]
         }
     },
     {
         "name": "search",
         "description": "網頁搜索",
         "parameters": {
-            "type":"object",
-            "properties":{"query":{"type":"string"}},
-            "required":["query"]
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"}
+            },
+            "required": ["query"]
         }
     },
     {
         "name": "doc_qa",
         "description": "單文檔 QA",
         "parameters": {
-            "type":"object",
-            "properties":{
-                "query":{"type":"string"},
-                "file":{"type":"object"}
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "file": {"type": "object"}
             },
-            "required":["query","file"]
+            "required": ["query", "file"]
         }
     },
     {
         "name": "doc_summarisation",
         "description": "單文檔總結",
         "parameters": {
-            "type":"object",
-            "properties":{
-                "query":{"type":"string"},
-                "file":{"type":"object"}
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "file": {"type": "object"}
             },
-            "required":["query","file"]
+            "required": ["query", "file"]
         }
     },
     {
         "name": "multi_doc_qa",
         "description": "多文檔 QA / Summarize",
         "parameters": {
-            "type":"object",
-            "properties":{
-                "query":{"type":"string"},
-                "files":{
-                    "type":"array",
-                    "items":{"type":"object","properties":{"name":{"type":"string"},"data":{"type":"string","format":"binary"}}}
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "files": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "data": {"type": "string", "format": "binary"}
+                        }
+                    }
                 }
             },
-            "required":["query"]
+            "required": ["query"]
         }
-    },
+    }
 ]
 
 # map name->orig_funcs 中的对应函数
 fn_map = {
-    "math":         lambda args: orig_funcs._calc_tool(args),
-    "time":         lambda args: orig_funcs.get_time_tool(args["query"]),
-    "weather":      lambda args: orig_funcs.weather_agent_tool(args),
-    "search":       lambda args: orig_funcs.search_web(args),
-    "doc_qa":       lambda args: orig_funcs.uploaded_qa(args),
-    "doc_summarisation":       lambda args: orig_funcs.document_summarize(args),
-    "multi_doc_qa": lambda args: orig_funcs.autogen_multi_document_analysis(args),
+    "math": lambda args: orig_funcs._calc_tool(args["expression"]),
+    "time": lambda args: orig_funcs.get_time_tool(args["query"]),
+    "weather": lambda args: orig_funcs.weather_agent_tool(args["query"]),
+    "search": lambda args: orig_funcs.search_web(args["query"]),
+    "doc_qa": lambda args: orig_funcs.uploaded_qa(args),
+    "doc_summarisation": lambda args: orig_funcs.document_summarize(args),
+    "multi_doc_qa": lambda args: orig_funcs.autogen_multi_document_analysis(args)
 }
 
 # --- FastAPI 服务 ---
