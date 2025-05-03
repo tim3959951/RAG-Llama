@@ -136,11 +136,12 @@ app = FastAPI()
 async def chat(request: Request):
     body    = await request.json()
     user_id = body.get("user_id", "anonymous")
-    msg_raw = body.get("query", "")
+    #msg_raw = body.get("query", "")
+    msg_raw = body.get("query", "\"\"")
     try:
         msg = json.loads(msg_raw)
     except json.JSONDecodeError:
-        msg = msg_raw
+        msg = msg_raw  # fallback: 如果解不開就用原始字串
     files   = body.get("files", [])  # [{"name":..,"data":..}, ...]
 
     # 读历史
