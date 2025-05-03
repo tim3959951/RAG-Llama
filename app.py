@@ -25,7 +25,7 @@ openai = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 function_specs = [
     {
         "name": "math",
-        "description": "数学运算",
+        "description": "數學運算",
         "parameters": {
             "type":"object",
             "properties": {"expression":{"type":"string"}},
@@ -34,12 +34,12 @@ function_specs = [
     },
     {
         "name": "time",
-        "description": "获取当前时间/日期",
+        "description": "獲取當前時間/日期",
         "parameters": {"type":"object","properties":{}}
     },
     {
         "name": "weather",
-        "description": "天气查询",
+        "description": "天氣查詢",
         "parameters": {
             "type":"object",
             "properties":{"query":{"type":"string"}},
@@ -48,7 +48,7 @@ function_specs = [
     },
     {
         "name": "search",
-        "description": "网页搜索",
+        "description": "網頁搜索",
         "parameters": {
             "type":"object",
             "properties":{"query":{"type":"string"}},
@@ -57,7 +57,19 @@ function_specs = [
     },
     {
         "name": "doc_qa",
-        "description": "单文档 QA",
+        "description": "單文檔 QA",
+        "parameters": {
+            "type":"object",
+            "properties":{
+                "query":{"type":"string"},
+                "file":{"type":"object"}
+            },
+            "required":["query","file"]
+        }
+    },
+    {
+        "name": "doc_summarisation",
+        "description": "單文檔總結",
         "parameters": {
             "type":"object",
             "properties":{
@@ -69,7 +81,7 @@ function_specs = [
     },
     {
         "name": "multi_doc_qa",
-        "description": "多文档 QA / Summarize",
+        "description": "多文檔 QA / Summarize",
         "parameters": {
             "type":"object",
             "properties":{
@@ -86,12 +98,13 @@ function_specs = [
 
 # map name->orig_funcs 中的对应函数
 fn_map = {
-    "math":         lambda args: orig_funcs.fn_math(args),
-    "time":         lambda args: orig_funcs.fn_time(args),
-    "weather":      lambda args: orig_funcs.fn_weather(args),
-    "search":       lambda args: orig_funcs.fn_search(args),
-    "doc_qa":       lambda args: orig_funcs.fn_doc_qa(args),
-    "multi_doc_qa": lambda args: orig_funcs.fn_multi_doc_qa(args),
+    "math":         lambda args: orig_funcs._calc_tool(args),
+    "time":         lambda args: orig_funcs.get_time_tool(args),
+    "weather":      lambda args: orig_funcs.weather_agent_tool(args),
+    "search":       lambda args: orig_funcs.search_web(args),
+    "doc_qa":       lambda args: orig_funcs.uploaded_qa(args),
+    "doc_summarisation":       lambda args: orig_funcs.document_summarize(args),
+    "multi_doc_qa": lambda args: orig_funcs.autogen_multi_document_analysis(args),
 }
 
 # --- FastAPI 服务 ---
