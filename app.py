@@ -99,7 +99,7 @@ function_specs = [
 # map name->orig_funcs 中的对应函数
 fn_map = {
     "math":         lambda args: orig_funcs._calc_tool(args),
-    "time":         lambda args: orig_funcs.get_time_tool(args),
+    "time":         lambda args: orig_funcs.get_time_tool(args["query"]),
     "weather":      lambda args: orig_funcs.weather_agent_tool(args),
     "search":       lambda args: orig_funcs.search_web(args),
     "doc_qa":       lambda args: orig_funcs.uploaded_qa(args),
