@@ -816,10 +816,10 @@ Visibility: {closest_hour.get("vis_km", "N/A")} km
 """
         response = llm_gpt4.invoke(summary_prompt)
         return response.content.strip() if isinstance(response, AIMessage) else str(response)
-
+        print(f"[DEBUG] Weather Agent Raw Output: {response}")
     except Exception as e:
         return f"Weather Agent Error: {e}"
-        
+         
 
 @tool("weather")
 def weather_tool(query: str) -> str:
