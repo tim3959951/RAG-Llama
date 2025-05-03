@@ -122,7 +122,11 @@ fn_map = {
     "search": lambda args: orig_funcs.search_web(args["query"]),
     "doc_qa": lambda args: orig_funcs.uploaded_qa(args),
     "doc_summarisation": lambda args: orig_funcs.document_summarize(args),
-    "multi_doc_qa": lambda args: orig_funcs.autogen_multi_document_analysis(args)
+    "multi_doc_qa": lambda args: orig_funcs.autogen_multi_document_analysis(
+    args["query"],
+    [f["data"] for f in args["files"]],
+    [f["name"] for f in args["files"]]
+)
 }
 
 # --- FastAPI 服务 ---
