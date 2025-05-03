@@ -142,7 +142,7 @@ async def chat(request: Request):
     # 读历史
     history = load_history(user_id)
     if not history:
-        history.append({"role":"system","content":"你是一名支持数学、时间、天气、搜索和文档 QA 的智能助理。"})
+        history.append({"role":"system","content":"你是一名支持數學、時間、天氣、搜索和文檔QA的AI助理"})
     history.append({"role":"user","content":msg})
 
     # 1) 询问 GPT 是否调用函数
@@ -172,7 +172,7 @@ async def chat(request: Request):
             messages=[
                 *history,
                 {"role":"function","name":name,"content":json.dumps(result,ensure_ascii=False)},
-                {"role":"user","content":"请根据工具返回的数据，用简明自然语言回答用户。"}
+                {"role":"user","content":"請根據工具返回的數據，用簡明的自然語言回答用戶。"}
             ]
         )
         reply = follow.choices[0].message.content
