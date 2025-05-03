@@ -47,7 +47,7 @@ function_specs = [
     },
     {
         "name": "weather",
-        "description": "天氣查詢",
+        "description": "天氣查詢，包括過去、現在和未來的天氣。",
         "parameters": {
             "type": "object",
             "properties": {
