@@ -707,12 +707,12 @@ def weather_agent_tool(query: str) -> str:
         forecast_hours = []
         if "forecast" in data:
             for day in data["forecast"]["forecastday"]:
-                for hour in day["hour"]:
-                    forecast_hours.append(hour)
-        elif "forecastday" in data:
-            forecast_hours = data["forecastday"][0]["hour"]
+                forecast_hours.extend(day["hour"])
+        elif "history" in data:
+            for day in data["history"]["forecastday"]:
+                forecast_hours.extend(day["hour"])
         else:
-            return "No forecast data available."
+            return "No hourly data available in API response."
 
         # Step 4: Find closest hour
         min_diff = float("inf")
