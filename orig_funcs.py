@@ -773,7 +773,12 @@ def weather_agent_tool(query: str) -> str:
         is_past = target_dt < now
 
         # 組 prompt 主體
-        summary_prompt = f"""
+        if not is_past:
+            suggestion_line = "Also, after answering the question, include a short weather summary and a useful suggestion (e.g., bring an umbrella, wear sunscreen, avoid outdoor activities)."
+        else:
+            suggestion_line = ""
+
+summary_prompt = f"""
 You are a helpful weather reasoning assistant.
 
 The user wants to know about the weather conditions at a specific time: {target_dt.strftime('%Y-%m-%d %H:%M')} in {location}.  
@@ -786,14 +791,8 @@ Avoid being overly confident — never say "Yes, it will..." or "Definitely." In
 - "There is a high chance of..."
 - "Based on the available data, it seems that..."
 - "There may be..."
-"""
 
-if not is_past:
-    summary_prompt += """
-Also, after answering the question, include a short weather summary and a useful suggestion (e.g., bring an umbrella, wear sunscreen, avoid outdoor activities).
-"""
-
-summary_prompt += f"""
+{suggestion_line}
 
 **Do not use markdown formatting such as `*`, `**`, or list symbols.**
 
