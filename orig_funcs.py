@@ -695,22 +695,44 @@ def weather_agent_tool(query: str) -> str:
 
         # Step 1: Extract location
         location_prompt = f"""
-        You are a location extractor. Given a user's query about weather, extract the location mentioned in it.
-        If not found, return "Taipei".
+You are a location extractor. Given a user's query about weather, extract the **Taiwan city or county name** mentioned in it.
 
-        Examples:
-        - "Is it gonna rain in Tokyo?" → Tokyo
-        - "Will it be hot in New York later?" → New York
-        - "明天下午高雄會不會下雨？" → Kaohsiung
-        - "等一下台北會很熱嗎？" → Taipei
-        - "等一下台中會很熱嗎？" → Taichung
-        - "屏東昨天天氣如何？" → Pingtung
-        - "現在在紐約有下雪嗎？" → New York
-        - "今天會下雨嗎？" → Taipei
-        - "How’s the weather?" → Taipei
+**Always return the city/county name in English (Latin alphabet), even if the user used Chinese or any other language.**
 
-        Query: "{query}"
-        """
+If no location is found, default to "Taipei".
+
+### Examples:
+- "Is it gonna rain in Tokyo?" → Tokyo
+- "Will it be hot in New York later?" → New York
+- "明天下午高雄會不會下雨？" → Kaohsiung
+- "等一下台北會很熱嗎？" → Taipei
+- "等一下台中會很熱嗎？" → Taichung
+- "屏東昨天天氣如何？" → Pingtung
+- "現在在紐約有下雪嗎？" → New York
+- "今天會下雨嗎？" → Taipei
+- "嘉義昨天有下雨嗎？" → Chiayi
+- "嘉义五天前天氣如何？" → Chiayi
+- "雲林這幾天會不會下雨？" → Yunlin
+- "台南明天會熱嗎？" → Tainan
+- "花蓮後天會不會下雨？" → Hualien
+- "新竹最近風大嗎？" → Hsinchu
+- "澎湖今天會下雨嗎？" → Penghu
+- "金門最近風大嗎？" → Kinmen
+- "馬祖這幾天天氣如何？" → Matsu
+- "台東明天下雨嗎？" → Taitung
+- "宜蘭後天會熱嗎？" → Yilan
+- "南投昨天有下雨嗎？" → Nantou
+- "苗栗明天的氣溫如何？" → Miaoli
+- "彰化最近天氣怎樣？" → Changhua
+- "基隆這幾天風大嗎？" → Keelung
+- "桃園未來幾天天氣？" → Taoyuan
+- "新北最近會下雨嗎？" → New Taipei
+
+Query: "{query}"
+
+### Response:
+Return **only** the city or county name, no extra words.
+"""
         location_resp = llm_gpt4.invoke(location_prompt)
         location = location_resp.content.strip() if isinstance(location_resp, AIMessage) else str(location_resp).strip()
 
