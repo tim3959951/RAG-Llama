@@ -152,7 +152,7 @@ async def chat(request: Request):
         history.append({"role":"system","content":"你是一名 AI 助理，支持數學、時間、天氣、搜索、文檔QA和文檔總結。"})
     history.append({"role":"user","content":msg})
     
-    fallback_keywords = ["天氣", "weather"]
+    fallback_keywords = ["weather", "rain", "snow", "cold", "hot", "sunscreen", "sunglasses", "umbrella", "windy", "cloudy", "sunny", "temperature", "forecast", "天氣", "會不會下雨", "冷嗎", "熱嗎", "氣溫"]
     if any(keyword in msg for keyword in fallback_keywords):
         print("[DEBUG] Triggered fallback: forcing weather function")
         result = fn_map["weather"]({"query": msg})
