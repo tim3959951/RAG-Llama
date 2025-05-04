@@ -143,9 +143,9 @@ async def chat(request: Request):
     msg_raw = body.get("query", "\"\"")
     try:
         msg = json.loads(msg_raw)
-        print(f"[DEBUG] User Query: {msg}")
     except json.JSONDecodeError:
         msg = msg_raw  # fallback: 如果解不開就用原始字串
+    print(f"[DEBUG] User Query: {msg}")
     files   = body.get("files", [])  # [{"name":..,"data":..}, ...]
 
     # 读历史
@@ -154,10 +154,11 @@ async def chat(request: Request):
         history.append({"role":"system","content":"你是一名 AI 助理，支持數學、時間、天氣、搜索、文檔QA和文檔總結。"})
     history.append({"role":"user","content":msg})
     
-    fallback_keywords = ["weather", "rain", "snow", "cold", "hot", "sunscreen", "sunglasses", "umbrella", "windy", "cloudy", "sunny", "temperature", "forecast", "天氣", "會不會下雨", "冷嗎", "熱嗎", "氣溫"]
-    if any(keyword in msg for keyword in fallback_keywords):
+    fallback_keywords = ["weather", "rain", "snow", "cold", "hot", "sunscreen", "sunglasses", "umbrella", "windy", "cloudy", "sunny", "temperature", "forecast", "天氣", "下雨", "冷嗎", "熱嗎", "氣溫"]
+    msg_str = msg if isinstance(msg, str) else str(msg)
+    if any(keyword in msg_str for keyword in fallback_keywords):
         print("[DEBUG] Triggered fallback: forcing weather function")
-        result = fn_map["weather"]({"query": msg})
+        result = fn_map["weather"]({"query": msg_str})
 
         # 再次向 GPT 匯總結果（注意這裡去掉 json.dumps）
         follow = openai.chat.completions.create(
