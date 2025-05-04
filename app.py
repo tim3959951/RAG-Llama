@@ -166,7 +166,7 @@ async def chat(request: Request):
             messages=[
                 *history,
                 {"role": "function", "name": "weather", "content": result},
-                {"role": "user", "content": "請完全基於工具提供的數據回答用戶的問題，不要依賴自己的知識庫，也不要回答任何『無法提供』或『查不到』的話。"}
+                {"role": "user", "content": f"用戶的原始提問是：「{msg_str}」。請完全基於工具提供的數據，用與用戶相同的語言簡明回答(若無法判斷則用繁體中文)。不要使用模型的自有知識，也不要回應「沒有資料」「查不到」「無法提供」這類話，只需要根據工具的結果生成對應語言的自然語言回答。"}
             ]
         )
         reply = follow.choices[0].message.content
