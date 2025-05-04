@@ -7,16 +7,17 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from openai import OpenAI
 from typing import Dict, Any
+from langsmith import traceable
 
 # --- Redis 多用户会话记忆（24 小时过期） ---
 REDIS = redis.Redis(host="127.0.0.1", port=6379, db=0, decode_responses=True)
 def load_history(user_id: str):
     data = REDIS.get(f"conv:{user_id}")
     history = json.loads(data) if data else []
-    print(f"[DEBUG] Loaded history for {user_id}: {history}")
+    #print(f"[DEBUG] Loaded history for {user_id}: {history}")
     return history
 def save_history(user_id: str, history, ttl_hours=24):
-    print(f"[DEBUG] Saving history for {user_id}: {history}")
+    #print(f"[DEBUG] Saving history for {user_id}: {history}")
     REDIS.setex(f"conv:{user_id}", ttl_hours*3600, json.dumps(history, ensure_ascii=False))
 # --- 导入你原封不动的所有函数 ---
 import orig_funcs
@@ -142,6 +143,7 @@ async def chat(request: Request):
     msg_raw = body.get("query", "\"\"")
     try:
         msg = json.loads(msg_raw)
+        print(f"[DEBUG] User Query: {msg}")
     except json.JSONDecodeError:
         msg = msg_raw  # fallback: 如果解不開就用原始字串
     files   = body.get("files", [])  # [{"name":..,"data":..}, ...]
@@ -167,7 +169,7 @@ async def chat(request: Request):
             ]
         )
         reply = follow.choices[0].message.content
-
+        print(f"[DEBUG] Final Output to User (Fallback): {reply}")
         history.append({"role": "assistant", "content": reply})
         save_history(user_id, history)
         return JSONResponse({"reply": reply})
@@ -203,11 +205,11 @@ async def chat(request: Request):
             ]
         )
         reply = follow.choices[0].message.content
-
+        print(f"[DEBUG] Final Output to User (function call): {reply}")
     else:
         # 直接回答
         reply = msg_obj.content
-
+        print(f"[DEBUG] Final Output to User (no function call): {reply}")
     # 存历史 & 返回
     history.append({"role":"assistant","content":reply})
     save_history(user_id, history)
