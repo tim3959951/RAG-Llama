@@ -591,11 +591,11 @@ def get_time_tool2(query: str) -> datetime:
         location = location_response.content.strip() if isinstance(location_response, AIMessage) else str(location_response).strip()
 
         # Step 2: 當地目前時間（加入 DEBUG）
-        print(f"[DEBUG] Extracted Location: {location}")
+        #print(f"[DEBUG] Extracted Location: {location}")
         tz_str = location_to_timezone(location)
-        print(f"[DEBUG] Timezone: {tz_str}")
+        #print(f"[DEBUG] Timezone: {tz_str}")
         now = datetime.now(ZoneInfo(tz_str))
-        print(f"[DEBUG] Local Time at {location}: {now}")
+        #print(f"[DEBUG] Local Time at {location}: {now}")
 
         # Step 3: 動態 few-shot prompt（每次更新 based on now）
         examples = [
@@ -735,7 +735,8 @@ Return **only** the city or county name, no extra words.
 """
         location_resp = llm_gpt4.invoke(location_prompt)
         location = location_resp.content.strip() if isinstance(location_resp, AIMessage) else str(location_resp).strip()
-
+        print(f"[DEBUG] Final Location Passed to API: {location}")
+        
         # Step 2: Get timezone and time
         target_dt = get_time_tool2(query)
 
