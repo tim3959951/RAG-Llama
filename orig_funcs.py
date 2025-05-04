@@ -738,6 +738,7 @@ def weather_agent_tool(query: str) -> str:
             url = f"http://api.weatherapi.com/v1/forecast.json?key={weather_api_key}&q={location}&days=3&aqi=no&alerts=no"
 
         data = requests.get(url).json()
+        print(f"[DEBUG] Raw API Response: {data}")
         forecast_hours = []
         if "forecast" in data:
             for day in data["forecast"]["forecastday"]:
@@ -815,8 +816,9 @@ Visibility: {closest_hour.get("vis_km", "N/A")} km
 --- Final Answer ---
 """
         response = llm_gpt4.invoke(summary_prompt)
-        return response.content.strip() if isinstance(response, AIMessage) else str(response)
-        print(f"[DEBUG] Weather Agent Raw Output: {response}")
+        final_result = response.content.strip() if isinstance(response, AIMessage) else str(response)
+        print(f"[DEBUG] Final Weather Data Passed Back: {final_result}")
+        return final_result
     except Exception as e:
         return f"Weather Agent Error: {e}"
          
