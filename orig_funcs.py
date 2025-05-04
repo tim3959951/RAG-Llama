@@ -699,7 +699,7 @@ You are a location extractor. Given a user's query about weather, extract the **
 
 **Always return the city/county name in English (Latin alphabet), even if the user used Chinese or any other language.**
 
-If no location is found, default to "Taipei".
+If no location is found, default to "Taiwan".
 
 ### Examples:
 - "Is it gonna rain in Tokyo?" → Tokyo
@@ -736,7 +736,8 @@ Return **only** the city or county name, no extra words.
         location_resp = llm_gpt4.invoke(location_prompt)
         location = location_resp.content.strip() if isinstance(location_resp, AIMessage) else str(location_resp).strip()
         print(f"[DEBUG] Final Location Passed to API: {location}")
-        
+        if location == "Chiayi":
+            location = "Chiayi City"
         # Step 2: Get timezone and time
         target_dt = get_time_tool2(query)
 
