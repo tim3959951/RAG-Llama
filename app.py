@@ -8,17 +8,57 @@ from fastapi.responses import JSONResponse
 from openai import OpenAI
 from typing import Dict, Any
 from langsmith import traceable
+from langchain.memory import ConversationBufferWindowMemory
+from langchain.schema import HumanMessage, AIMessage
 
-# --- Redis 多用户会话记忆（24 小时过期） ---
+# --- Redis 多用户会话记忆（使用 BufferMemory） ---
 REDIS = redis.Redis(host="127.0.0.1", port=6379, db=0, decode_responses=True)
-def load_history(user_id: str):
-    data = REDIS.get(f"conv:{user_id}")
-    history = json.loads(data) if data else []
-    #print(f"[DEBUG] Loaded history for {user_id}: {history}")
+
+# 獲取用戶的記憶（使用 BufferMemory 管理）
+def get_memory(user_id: str, k=10):
+    """獲取用戶的 BufferMemory，限制保留最近 k 條消息"""
+    memory = ConversationBufferWindowMemory(k=k, return_messages=True)
+    
+    # 從 Redis 讀取序列化的記憶
+    data = REDIS.get(f"memory:{user_id}")
+    if data:
+        try:
+            stored_messages = json.loads(data)
+            for msg in stored_messages:
+                if msg["type"] == "human":
+                    memory.chat_memory.add_user_message(msg["content"])
+                elif msg["type"] == "ai":
+                    memory.chat_memory.add_ai_message(msg["content"])
+        except Exception as e:
+            print(f"[DEBUG] Error loading memory: {e}")
+    
+    return memory
+
+# 保存用戶的記憶
+def save_memory(user_id: str, memory, ttl_hours=24):
+    """將用戶的 BufferMemory 保存到 Redis"""
+    messages = []
+    for msg in memory.chat_memory.messages:
+        if isinstance(msg, HumanMessage):
+            messages.append({"type": "human", "content": msg.content})
+        elif isinstance(msg, AIMessage):
+            messages.append({"type": "ai", "content": msg.content})
+    
+    REDIS.setex(f"memory:{user_id}", ttl_hours*3600, json.dumps(messages, ensure_ascii=False))
+
+# 將 BufferMemory 轉換為 OpenAI 格式的歷史記錄
+def memory_to_history(memory):
+    """將 BufferMemory 轉換為可用於 OpenAI API 的消息格式"""
+    history = [{"role": "system", "content": "你是一名 AI 助理，支持數學、時間、天氣、搜索、文檔QA和文檔總結。"}]
+    
+    for msg in memory.chat_memory.messages:
+        if isinstance(msg, HumanMessage):
+            history.append({"role": "user", "content": msg.content})
+        elif isinstance(msg, AIMessage):
+            history.append({"role": "assistant", "content": msg.content})
+    
     return history
-def save_history(user_id: str, history, ttl_hours=24):
-    #print(f"[DEBUG] Saving history for {user_id}: {history}")
-    REDIS.setex(f"conv:{user_id}", ttl_hours*3600, json.dumps(history, ensure_ascii=False))
+
 # --- 导入你原封不动的所有函数 ---
 import orig_funcs
 
@@ -139,7 +179,6 @@ app = FastAPI()
 async def chat(request: Request):
     body    = await request.json()
     user_id = body.get("user_id", "anonymous")
-    #msg_raw = body.get("query", "")
     msg_raw = body.get("query", "\"\"")
     try:
         msg = json.loads(msg_raw)
@@ -148,11 +187,12 @@ async def chat(request: Request):
     print(f"[DEBUG] User Query: {msg}")
     files   = body.get("files", [])  # [{"name":..,"data":..}, ...]
 
-    # 读历史
-    history = load_history(user_id)
-    if not history:
-        history.append({"role":"system","content":"你是一名 AI 助理，支持數學、時間、天氣、搜索、文檔QA和文檔總結。"})
-    history.append({"role":"user","content":msg})
+    # 獲取記憶並將用戶消息添加到記憶
+    memory = get_memory(user_id)
+    memory.chat_memory.add_user_message(msg)
+    
+    # 將記憶轉換為 OpenAI 格式的歷史記錄
+    history = memory_to_history(memory)
     
     fallback_keywords = ["weather", "rain", "snow", "cold", "hot", "sunscreen", "sunglasses", "umbrella", "windy", "cloudy", "sunny", "temperature", "forecast", "天氣", "下雨", "冷嗎", "熱嗎", "氣溫"]
     msg_str = msg if isinstance(msg, str) else str(msg)
@@ -171,8 +211,11 @@ async def chat(request: Request):
         )
         reply = follow.choices[0].message.content
         print(f"[DEBUG] Final Output to User (Fallback): {reply}")
-        history.append({"role": "assistant", "content": reply})
-        save_history(user_id, history)
+        
+        # 將回覆添加到記憶並保存
+        memory.chat_memory.add_ai_message(reply)
+        save_memory(user_id, memory)
+        
         return JSONResponse({"reply": reply})
         
     # 1) 询问 GPT 是否调用函数
@@ -211,9 +254,11 @@ async def chat(request: Request):
         # 直接回答
         reply = msg_obj.content
         print(f"[DEBUG] Final Output to User (no function call): {reply}")
-    # 存历史 & 返回
-    history.append({"role":"assistant","content":reply})
-    save_history(user_id, history)
+    
+    # 將回覆添加到記憶並保存
+    memory.chat_memory.add_ai_message(reply)
+    save_memory(user_id, memory)
+    
     return JSONResponse({"reply": reply})
 
 
